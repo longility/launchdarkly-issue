@@ -3,19 +3,29 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import LaunchDarklyInitializer from "./LaunchDarklyInitializer";
-import LaunchDarklyUserInitializer from "./LaunchDarklyUserInitializer";
+import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <LaunchDarklyInitializer clientSideId="<CLIENT-SIDE-ID-HERE>">
-      <LaunchDarklyUserInitializer>
+(async () => {
+  const LDProvider = await asyncWithLDProvider({
+    clientSideID: "<CLIENT-SIDE-ID>",
+    user: {
+      key: "d4695385-cdff-457f-a581-feae81aced10",
+      firstName: "John",
+      lastName: "Doe",
+      name: "John Doe",
+      email: "john.doe@email.com",
+    },
+  });
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <LDProvider>
         <App />
-      </LaunchDarklyUserInitializer>
-    </LaunchDarklyInitializer>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+      </LDProvider>
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+})();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
